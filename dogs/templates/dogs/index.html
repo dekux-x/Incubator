@@ -1,0 +1,90 @@
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dog Catalog</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    .header {
+      background-color: #333;
+      color: #fff;
+      padding: 10px 20px;
+      text-align: center;
+    }
+
+    .catalog {
+      display:table-cell;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      grid-gap: 20px;
+      padding: 20px;
+      background-position: center center;
+      position: absolute;
+    }
+
+    .breed-item {
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      padding: 10px;
+      text-align: center;
+      transition: transform 0.3s ease;
+    }
+
+    .breed-item:hover {
+      transform: scale(1.05);
+    }
+
+    .breed-item img {
+      max-width: 100%;
+      height: auto;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>ILoveDogs</h1>
+    <select id="breedSelect">
+      {% for dog in dogs %}
+      <option value="{{ dog }}">{{dog}}</option>
+      {% endfor %}
+    
+      <!-- Add more options as needed -->
+    </select>
+
+    <div>
+        {% if previous %}
+        <form action="{% url 'dogs:index' %}" method="get">
+          <input type="hidden" name="page" value="{{previous}}">
+          <input type="submit" value="Previous Page">
+        </form>
+        {% endif %}
+        {% if next %}
+        <form action="{% url 'dogs:index' %}" method="get">
+            <input type="hidden" name="page" value="{{next}}">
+          <input type="submit" value="Next Page">
+        </form>
+        {% endif %}
+      </div>
+      
+
+  </div>
+  <div class="catalog" id="dogCatalog">
+    {% for dog in catalog %}
+    <div class="breed-item" data-breed="{{ dog.0 }}">
+        <a href="{% url 'dogs:detail' dog.0 %}">
+            <img src="{{ dog.1 }}" alt="{{ dog.0 }}">
+        </a>
+        
+      <p>{{ dog.0 }}</p>
+    </div>
+    {% endfor %}
+  </div>
+
+
+</body>
+</html> 

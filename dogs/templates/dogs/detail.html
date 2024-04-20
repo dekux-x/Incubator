@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dog Catalog</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    .header {
+        background-color: #333;
+        color: #fff;
+        padding: 10px 20px;
+        text-align: center;
+    }
+
+    .catalog {
+        padding: 20px;
+    }
+
+    .breed-item {
+        display: inline-block;
+        margin-right: 20px;
+    }
+    .home-button {
+        margin-top: 20px;
+    }
+
+    .breed-item img {
+        max-width: 100%;
+        height: auto;
+    }
+</style>
+</head>
+<body>
+<div class="header">
+    <h1>{{breed}}</h1>
+    <select id="breedSelect">
+        {% for dog in dogs %}
+        <option value="{{ dog }}">{{dog}}</option>
+        {% endfor %}
+      
+        <!-- Add more options as needed -->
+      </select>
+      
+      <a href="{% url 'dogs:index' %}">
+        <button class="home-button">Home</button>
+    </a>
+</div>
+<div class="catalog">
+    {%for image in images%}
+    <div class="breed-item">
+        <img src="{{image}}" alt="{{breed}}">
+    </div>
+    {%endfor%}
+</div>
+
+</body>
+</html>
