@@ -1,64 +1,173 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dog Catalog</title>
-<style>
-    body {
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dog Catalog</title>
+    <style>
+      .breed-item {
+        display: inline-block;
+        margin-right: 20px;
+      }
+      .home-button {
+        margin-top: 20px;
+      }
+
+      body {
         font-family: Arial, sans-serif;
         margin: 0;
         padding: 0;
         box-sizing: border-box;
-    }
+        background: #000;
+      }
 
-    .header {
-        background-color: #333;
-        color: #fff;
+      .header {
+        background-color: rgb(255, 255, 255);
+        color: #000;
         padding: 10px 20px;
         text-align: center;
-    }
+        font-family: "Roboto Mono", monospace;
+        font-optical-sizing: auto;
+        font-style: normal;
+        font-size: 24px;
+        color: #000;
+        text-transform: capitalize;
+      }
 
-    .catalog {
-        padding: 20px;
-    }
+      .catalog {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        padding: 0 30px;
+      }
 
-    .breed-item {
-        display: inline-block;
-        margin-right: 20px;
-    }
-    .home-button {
-        margin-top: 20px;
-    }
+      @media screen and (max-width: 1200px) {
+        .catalog {
+          grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+      }
+      @media screen and (max-width: 800px) {
+        .catalog {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+      }
 
-    .breed-item img {
-        max-width: 100%;
-        height: auto;
-    }
-</style>
-</head>
-<body>
-<div class="header">
-    <h1>{{breed}}</h1>
-    <select id="breedSelect">
+      @media screen and (max-width: 600px) {
+        .catalog {
+          grid-template-columns: repeat(1, minmax(0, 1fr));
+        }
+      }
+
+      .void {
+        margin: 20px;
+      }
+      .breed-item {
+        border: 2px solid rgb(0, 0, 0);
+        border-radius: 20px;
+        padding: 10px;
+        text-align: center;
+        transition: transform 0.3s ease;
+        background: #fff;
+        width: 100%;
+      }
+
+      a {
+        text-decoration: none;
+        font-family: "Roboto Mono", monospace;
+        font-optical-sizing: auto;
+        font-style: normal;
+        font-size: 24px;
+        color: #000;
+        text-transform: capitalize;
+      }
+
+      a:visited {
+        color: #000;
+      }
+
+      .breed-item:hover {
+        transform: scale(1.05);
+      }
+
+      .breed-item img {
+        width: 300px;
+        height: 300px;
+        border-radius: 20px;
+      }
+
+      input[type="submit"],
+      select {
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        background-color: #000000;
+        color: #fff;
+        cursor: pointer;
+        font-size: 16px;
+        transition: background-color 0.3s ease;
+        width: 10rem;
+      }
+
+      .home-button{
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        background-color: #000000;
+        color: #fff;
+        cursor: pointer;
+        font-size: 16px;
+        transition: background-color 0.3s ease;
+        width: 10rem;
+      }
+      input[type="submit"]:hover,
+      select:hover {
+        background-color: #000000;
+      }
+
+      .mainSelect{
+        display: flex;
+        justify-content: center;
+      }
+      .inputs {
+        display: flex;
+        justify-content: space-between;
+        max-width: 20%;
+        margin: 0 auto;
+        padding-top: 2rem;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="header">
+      <h1>{{breed}}</h1>
+      <select id="breedSelect" onchange="redirectOnChange()">
         {% for dog in dogs %}
         <option value="{{ dog }}">{{dog}}</option>
         {% endfor %}
-      
-        <!-- Add more options as needed -->
       </select>
-      
+
       <a href="{% url 'dogs:index' %}">
         <button class="home-button">Home</button>
-    </a>
-</div>
-<div class="catalog">
-    {%for image in images%}
-    <div class="breed-item">
-        <img src="{{image}}" alt="{{breed}}">
+      </a>
     </div>
-    {%endfor%}
-</div>
+    <div class="catalog">
+      {%for image in images%}
+      <div class="void">
+        <div class="breed-item"">
+          <img src="{{image}}" alt="{{ breed }}" />
+        </div>
+      </div>
 
-</body>
+    
+      {%endfor%}
+    </div>
+  </body>
 </html>
+
+
+<script>
+    function redirectOnChange() {
+      var selectedValue = document.getElementById("breedSelect").value;
+      var redirectURL = "http://127.0.0.1:8000/dogs/" + selectedValue;
+      window.location.href = redirectURL;
+    }
+  </script>

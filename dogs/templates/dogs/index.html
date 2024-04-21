@@ -1,90 +1,167 @@
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dog Catalog</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap"
+      rel="stylesheet"
+    />
+    <title>Dog Catalog</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        background: #000;
+      }
 
-    .header {
-      background-color: #333;
-      color: #fff;
-      padding: 10px 20px;
-      text-align: center;
-    }
+      .header {
+        background-color: rgb(255, 255, 255);
+        color: #000;
+        padding: 10px 20px;
+        text-align: center;
+        font-family: "Roboto Mono", monospace;
+        font-optical-sizing: auto;
+        font-style: normal;
+        font-size: 24px;
+        color: #000;
+        text-transform: capitalize;
+      }
 
-    .catalog {
-      display:table-cell;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      grid-gap: 20px;
-      padding: 20px;
-      background-position: center center;
-      position: absolute;
-    }
+      .catalog {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+      }
 
-    .breed-item {
-      border: 1px solid #ddd;
-      border-radius: 5px;
-      padding: 10px;
-      text-align: center;
-      transition: transform 0.3s ease;
-    }
+      @media screen and (max-width: 1200px) {
+        .catalog {
+          grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+      }
+      @media screen and (max-width: 800px) {
+        .catalog {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+      }
 
-    .breed-item:hover {
-      transform: scale(1.05);
-    }
+      @media screen and (max-width: 600px) {
+        .catalog {
+          grid-template-columns: repeat(1, minmax(0, 1fr));
+        }
+      }
 
-    .breed-item img {
-      max-width: 100%;
-      height: auto;
-    }
-  </style>
-</head>
-<body>
-  <div class="header">
-    <h1>ILoveDogs</h1>
-    <select id="breedSelect">
-      {% for dog in dogs %}
-      <option value="{{ dog }}">{{dog}}</option>
-      {% endfor %}
-    
-      <!-- Add more options as needed -->
-    </select>
+      .void {
+        margin: 20px;
+      }
+      .breed-item {
+        border: 2px solid rgb(0, 0, 0);
+        border-radius: 20px;
+        padding: 10px;
+        text-align: center;
+        transition: transform 0.3s ease;
+        background: #fff;
+      }
 
-    <div>
+      a {
+        text-decoration: none;
+        font-family: "Roboto Mono", monospace;
+        font-optical-sizing: auto;
+        font-style: normal;
+        font-size: 24px;
+        color: #000;
+        text-transform: capitalize;
+      }
+
+      a:visited {
+        color: #000;
+      }
+
+      .breed-item:hover {
+        transform: scale(1.05);
+      }
+
+      .breed-item img {
+        width: 128px;
+        height: 128px;
+        border-radius: 20px;
+      }
+
+      input[type="submit"],
+      select {
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        background-color: #000000;
+        color: #fff;
+        cursor: pointer;
+        font-size: 16px;
+        transition: background-color 0.3s ease;
+        width: 10rem;
+      }
+
+      input[type="submit"]:hover,
+      select:hover {
+        background-color: #000000;
+      }
+
+      .inputs {
+        display: flex;
+        justify-content: center;
+        max-width: 20%;
+        margin: 0 auto;
+        padding-top: 2rem;
+      }
+
+      .previousBtn {
+        margin-right: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="header">
+      <h1>ILoveDogs</h1>
+      <select id="breedSelect" onchange="redirectOnChange()">
+        {% for dog in dogs %}
+        <option value="{{ dog }}">{{dog}}</option>
+        {% endfor %}
+      </select>
+      <div class="inputs">
         {% if previous %}
-        <form action="{% url 'dogs:index' %}" method="get">
-          <input type="hidden" name="page" value="{{previous}}">
-          <input type="submit" value="Previous Page">
+        <form class="previousBtn" action="{% url 'dogs:index' %}" method="get">
+          <input type="hidden" name="page" value="{{previous}}" />
+          <input type="submit" value="Previous Page" />
         </form>
-        {% endif %}
-        {% if next %}
+        {% endif %} {% if next %}
         <form action="{% url 'dogs:index' %}" method="get">
-            <input type="hidden" name="page" value="{{next}}">
-          <input type="submit" value="Next Page">
+          <input type="hidden" name="page" value="{{next}}" />
+          <input type="submit" value="Next Page" />
         </form>
         {% endif %}
       </div>
-      
-
-  </div>
-  <div class="catalog" id="dogCatalog">
-    {% for dog in catalog %}
-    <div class="breed-item" data-breed="{{ dog.0 }}">
-        <a href="{% url 'dogs:detail' dog.0 %}">
-            <img src="{{ dog.1 }}" alt="{{ dog.0 }}">
-        </a>
-        
-      <p>{{ dog.0 }}</p>
     </div>
-    {% endfor %}
-  </div>
+    <div class="catalog" id="dogCatalog">
+      {% for dog in catalog %}
+      <a href="{% url 'dogs:detail' dog.0 %}">
+        <div class="void">
+          <div class="breed-item" data-breed="{{ dog.0 }}">
+            <img src="{{ dog.1 }}" alt="{{ dog.0 }}" />
 
+            <p>{{ dog.0 }}</p>
+          </div>
+        </div>
+      </a>
+      {% endfor %}
+    </div>
+  </body>
+</html>
 
-</body>
-</html> 
+<script>
+  function redirectOnChange() {
+    var selectedValue = document.getElementById("breedSelect").value;
+    var redirectURL = "http://127.0.0.1:8000/dogs/" + selectedValue;
+    window.location.href = redirectURL;
+  }
+</script>
